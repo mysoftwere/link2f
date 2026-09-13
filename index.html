@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bulk Link Slash Converter</title>
+  <style>
+    body { 
+      max-width: 600px; 
+      margin: 0 auto; 
+      padding: 20px; 
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+      background: #f4f7f6; 
+      color: #333; 
+    }
+    h3 { 
+      margin-top: 0; 
+      color: #2c3e50; 
+      margin-bottom: 20px; 
+      font-size: 24px; 
+      text-align: center;
+    }
+    textarea { 
+      width: 100%; 
+      height: 120px; 
+      margin-bottom: 10px; 
+      padding: 12px; 
+      box-sizing: border-box; 
+      border: 1px solid #ccc; 
+      border-radius: 6px; 
+      resize: vertical; 
+      white-space: pre; 
+      overflow-wrap: normal; 
+      overflow-x: scroll; 
+      font-family: monospace; 
+      font-size: 13px;
+    }
+    input[type="text"] { 
+      width: 100%; 
+      padding: 12px; 
+      margin-bottom: 8px; 
+      box-sizing: border-box; 
+      border: 1px solid #ccc; 
+      border-radius: 6px; 
+      font-family: monospace; 
+      font-size: 13px; 
+    }
+    button { 
+      width: 100%; 
+      padding: 14px; 
+      margin-bottom: 15px; 
+      cursor: pointer; 
+      background: #27ae60; 
+      color: white; 
+      border: none; 
+      border-radius: 6px; 
+      font-weight: bold; 
+      font-size: 16px; 
+      transition: background 0.3s;
+    }
+    button:hover { background: #2ecc71; }
+    #copyBtn { background: #2980b9; }
+    #copyBtn:hover { background: #3498db; }
+    
+    .label { 
+      font-size: 14px; 
+      font-weight: bold; 
+      margin-bottom: 6px; 
+      display: block; 
+      color: #34495e; 
+    }
+    .note { 
+      font-size: 12px; 
+      color: #7f8c8d; 
+      margin-bottom: 10px; 
+      line-height: 1.4; 
+    }
+    .box-group { 
+      background: #fff; 
+      padding: 15px; 
+      border-radius: 8px; 
+      margin-bottom: 20px; 
+      border: 1px solid #e0e0e0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .or-divider {
+      text-align: center; 
+      font-weight: bold; 
+      margin: 15px 0; 
+      color: #95a5a6;
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+  <h3>Bulk Link Slash Converter</h3>
+  
+  <label class="label">1. Original Links (Up to 500+):</label>
+  <textarea id="inputLink" placeholder="https://chicago.mfa.gov.md/sites/file.html"></textarea>
+  
+  <div class="box-group">
+    <label class="label">2A. Replace Domain Only (Optional)</label>
+    <div class="note">Example: <code>https://india.mfa.gov.md</code><br>Keeps the original path, converts slashes to %2F, and changes the domain.</div>
+    <input type="text" id="domainInput" placeholder="e.g. https://india.mfa.gov.md">
+    
+    <div class="or-divider">-- OR --</div>
+    
+    <label class="label">2B. Exact Prefix (Optional)</label>
+    <div class="note">Example: <code>https://india.mfa.gov.md/sites%2Fchicago...%2F</code><br>Replaces everything except the filename. Appends the filename at the end.</div>
+    <input type="text" id="prefixInput" placeholder="e.g. https://india.mfa.gov.md/sites%2Fchicago...%2F">
+  </div>
+
+  <button id="convertBtn">Convert Links</button>
+  
+  <label class="label">Converted Results:</label>
+  <textarea id="outputLink" placeholder="Results will appear here in serial" readonly></textarea>
+  
+  <button id="copyBtn">Copy All Results</button>
+  
+  <script>
+    document.getElementById('convertBtn').addEventListener('click', () => {
+      const input = document.getElementById('inputLink').value.trim();
+      const domainInput = document.getElementById('domainInput').value.trim();
+      const prefixInput = document.getElementById('prefixInput').value.trim();
+      const outputEl = document.getElementById('outputLink');
+      
+      if (!input) {
+        outputEl.value = '';
+        return;
+      }
+
+      let newDomain = domainInput;
+      if (newDomain && newDomain.endsWith('/')) {
+        newDomain = newDomain.slice(0, -1);
+      }
+
+      const lines = input.split('\n');
+      const results = [];
+
+      for (let line of lines) {
+        line = line.trim();
+        if (!line) {
+          results.push(''); 
+          continue;
+        }
+
+        try {
+          const url = new URL(line);
+          const filename = url.pathname.substring(url.pathname.lastIndexOf('/') + 1);
+          
+          if (prefixInput) {
+            results.push(prefixInput + filename + url.search + url.hash);
+          } else {
+            const pathAfterFirstSlash = url.pathname.substring(1).replace(/\//g, '%2F');
+            const baseToUse = newDomain ? newDomain : url.origin;
+            results.push(baseToUse + '/' + pathAfterFirstSlash + url.search + url.hash);
+          }
+        } catch (e) {
+          if (prefixInput) {
+            const parts = line.split('/');
+            const filename = parts[parts.length - 1];
+            results.push(prefixInput + filename);
+          } else {
+            results.push(line.replace(/\//g, '%2F'));
+          }
+        }
+      }
+
+      outputEl.value = results.join('\n');
+    });
+
+    document.getElementById('copyBtn').addEventListener('click', () => {
+      const output = document.getElementById('outputLink');
+      if (output.value) {
+        output.select();
+        document.execCommand('copy');
+        
+        const btn = document.getElementById('copyBtn');
+        const originalText = btn.innerText;
+        btn.innerText = 'Copied All!';
+        setTimeout(() => {
+          btn.innerText = originalText;
+        }, 1500);
+      }
+    });
+  </script>
+</body>
+</html>

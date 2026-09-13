@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body { width: 500px; padding: 15px; font-family: sans-serif; background: #f9f9f9; }
+    h3 { margin-top: 0; color: #333; margin-bottom: 10px; font-size: 18px; }
+    textarea { width: 100%; height: 100px; margin-bottom: 10px; padding: 8px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; resize: vertical; white-space: pre; overflow-wrap: normal; overflow-x: scroll; font-family: monospace; font-size: 12px;}
+    input[type="text"] { width: 100%; padding: 8px; margin-bottom: 5px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; font-family: monospace; font-size: 12px; }
+    button { width: 100%; padding: 10px; margin-bottom: 10px; cursor: pointer; background: #4CAF50; color: white; border: none; border-radius: 4px; font-weight: bold; font-size: 14px; }
+    button:hover { background: #45a049; }
+    #copyBtn { background: #008CBA; }
+    #copyBtn:hover { background: #007bb5; }
+    .label { font-size: 12px; font-weight: bold; margin-bottom: 4px; display: block; color: #444; }
+    .note { font-size: 11px; color: #777; margin-bottom: 8px; line-height: 1.3; }
+    .box-group { background: #eee; padding: 10px; border-radius: 5px; margin-bottom: 15px; border: 1px solid #ddd; }
+  </style>
+</head>
+<body>
+  <h3>Bulk Link Slash Converter</h3>
+  
+  <label class="label">1. Original Links (Up to 500+):</label>
+  <textarea id="inputLink" placeholder="https://chicago.mfa.gov.md/sites/file.html"></textarea>
+  
+  <div class="box-group">
+    <label class="label">2A. Replace Domain Only (Optional)</label>
+    <div class="note">Example: <code>https://india.mfa.gov.md</code><br>Keeps the original path, converts slashes to %2F, and changes the domain.</div>
+    <input type="text" id="domainInput" placeholder="e.g. https://india.mfa.gov.md">
+    
+    <div style="text-align: center; font-weight: bold; margin: 10px 0; color: #888;">-- OR --</div>
+    
+    <label class="label">2B. Exact Prefix (Optional)</label>
+    <div class="note">Example: <code>https://india.mfa.gov.md/sites%2Fchicago...%2F</code><br>Replaces everything except the filename. Appends the filename at the end.</div>
+    <input type="text" id="prefixInput" placeholder="e.g. https://india.mfa.gov.md/sites%2Fchicago...%2F">
+  </div>
+
+  <button id="convertBtn">Convert Links</button>
+  
+  <label class="label">Converted Results:</label>
+  <textarea id="outputLink" placeholder="Results will appear here in serial" readonly></textarea>
+  
+  <button id="copyBtn">Copy All Results</button>
+  
+  <script src="popup.js"></script>
+</body>
+</html>

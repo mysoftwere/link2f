@@ -3,120 +3,208 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bulk Link Slash Converter</title>
+  <title>URL Transformer Pro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --bg-color: #0f172a;
+      --card-bg: #1e293b;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --border-color: #334155;
+      --input-bg: #0f172a;
+      --accent: #10b981;
+      --accent-hover: #059669;
+    }
+
     body { 
-      max-width: 600px; 
-      margin: 0 auto; 
-      padding: 20px; 
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-      background: #f4f7f6; 
-      color: #333; 
+      margin: 0;
+      padding: 40px 20px;
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-color);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
     }
-    h3 { 
-      margin-top: 0; 
-      color: #2c3e50; 
-      margin-bottom: 20px; 
-      font-size: 24px; 
+
+    .container {
+      width: 100%;
+      max-width: 650px;
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 35px;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--border-color);
+    }
+
+    h3 {
+      margin-top: 0;
+      margin-bottom: 30px;
+      font-size: 28px;
+      font-weight: 700;
       text-align: center;
+      background: linear-gradient(to right, #3b82f6, #8b5cf6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.5px;
     }
-    textarea { 
-      width: 100%; 
-      height: 120px; 
-      margin-bottom: 10px; 
-      padding: 12px; 
-      box-sizing: border-box; 
-      border: 1px solid #ccc; 
-      border-radius: 6px; 
-      resize: vertical; 
-      white-space: pre; 
-      overflow-wrap: normal; 
-      overflow-x: scroll; 
-      font-family: monospace; 
-      font-size: 13px;
-    }
-    input[type="text"] { 
-      width: 100%; 
-      padding: 12px; 
-      margin-bottom: 8px; 
-      box-sizing: border-box; 
-      border: 1px solid #ccc; 
-      border-radius: 6px; 
-      font-family: monospace; 
-      font-size: 13px; 
-    }
-    button { 
-      width: 100%; 
-      padding: 14px; 
-      margin-bottom: 15px; 
-      cursor: pointer; 
-      background: #27ae60; 
-      color: white; 
-      border: none; 
-      border-radius: 6px; 
-      font-weight: bold; 
-      font-size: 16px; 
-      transition: background 0.3s;
-    }
-    button:hover { background: #2ecc71; }
-    #copyBtn { background: #2980b9; }
-    #copyBtn:hover { background: #3498db; }
-    
-    .label { 
-      font-size: 14px; 
-      font-weight: bold; 
-      margin-bottom: 6px; 
-      display: block; 
-      color: #34495e; 
-    }
-    .note { 
-      font-size: 12px; 
-      color: #7f8c8d; 
-      margin-bottom: 10px; 
-      line-height: 1.4; 
-    }
-    .box-group { 
-      background: #fff; 
-      padding: 15px; 
-      border-radius: 8px; 
-      margin-bottom: 20px; 
-      border: 1px solid #e0e0e0;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-    .or-divider {
-      text-align: center; 
-      font-weight: bold; 
-      margin: 15px 0; 
-      color: #95a5a6;
+
+    .label {
       font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: block;
+      color: #e2e8f0;
     }
+
+    .note {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      line-height: 1.5;
+    }
+
+    textarea, input[type="text"] {
+      width: 100%;
+      padding: 14px;
+      margin-bottom: 18px;
+      box-sizing: border-box;
+      background: var(--input-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      color: var(--text-main);
+      font-family: 'Inter', monospace;
+      font-size: 13px;
+      transition: all 0.3s ease;
+    }
+
+    textarea:focus, input[type="text"]:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+    }
+
+    textarea {
+      height: 120px;
+      resize: vertical;
+      line-height: 1.5;
+    }
+
+    .box-group {
+      background: rgba(15, 23, 42, 0.5);
+      padding: 25px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      border: 1px solid var(--border-color);
+    }
+
+    .or-divider {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 600;
+      margin: 20px 0;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .or-divider::before, .or-divider::after {
+      content: '';
+      flex: 1;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .or-divider::before {
+      margin-right: 15px;
+    }
+
+    .or-divider::after {
+      margin-left: 15px;
+    }
+
+    button {
+      width: 100%;
+      padding: 16px;
+      margin-bottom: 20px;
+      cursor: pointer;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 16px;
+      letter-spacing: 0.5px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.4);
+    }
+
+    button:hover {
+      background: var(--primary-hover);
+      transform: translateY(-2px);
+    }
+
+    button:active {
+      transform: translateY(0);
+    }
+
+    #copyBtn {
+      background: var(--accent);
+      box-shadow: 0 4px 6px -1px rgba(16, 185, 129, 0.4);
+      margin-bottom: 0;
+    }
+
+    #copyBtn:hover {
+      background: var(--accent-hover);
+    }
+
+    code {
+      background: #334155;
+      padding: 3px 6px;
+      border-radius: 4px;
+      font-size: 11px;
+      color: #93c5fd;
+    }
+
+    /* Scrollbar Styling */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: var(--input-bg); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb { background: var(--border-color); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
   </style>
 </head>
 <body>
-  <h3>Bulk Link Slash Converter</h3>
-  
-  <label class="label">1. Original Links (Up to 500+):</label>
-  <textarea id="inputLink" placeholder="https://chicago.mfa.gov.md/sites/file.html"></textarea>
-  
-  <div class="box-group">
-    <label class="label">2A. Replace Domain Only (Optional)</label>
-    <div class="note">Example: <code>https://india.mfa.gov.md</code><br>Keeps the original path, converts slashes to %2F, and changes the domain.</div>
-    <input type="text" id="domainInput" placeholder="e.g. https://india.mfa.gov.md">
+  <div class="container">
+    <h3>URL Transformer Pro</h3>
     
-    <div class="or-divider">-- OR --</div>
+    <label class="label">1. Original Links (Bulk Supported)</label>
+    <textarea id="inputLink" placeholder="https://chicago.mfa.gov.md/sites/file.html&#10;https://chicago.mfa.gov.md/sites/file2.html"></textarea>
     
-    <label class="label">2B. Exact Prefix (Optional)</label>
-    <div class="note">Example: <code>https://india.mfa.gov.md/sites%2Fchicago...%2F</code><br>Replaces everything except the filename. Appends the filename at the end.</div>
-    <input type="text" id="prefixInput" placeholder="e.g. https://india.mfa.gov.md/sites%2Fchicago...%2F">
+    <div class="box-group">
+      <label class="label">2A. Replace Domain Only (Optional)</label>
+      <div class="note">Keeps the original path, converts slashes to %2F, and changes the domain. <br>Example: <code>https://india.mfa.gov.md</code></div>
+      <input type="text" id="domainInput" placeholder="e.g. https://india.mfa.gov.md">
+      
+      <div class="or-divider">Or</div>
+      
+      <label class="label">2B. Exact Prefix Match (Optional)</label>
+      <div class="note">Replaces everything except the filename. Appends the filename at the end. <br>Example: <code>https://india.mfa.gov.md/sites%2Fchicago...%2F</code></div>
+      <input type="text" id="prefixInput" placeholder="e.g. https://india.mfa.gov.md/sites%2Fchicago...%2F">
+    </div>
+
+    <button id="convertBtn">Convert Links</button>
+    
+    <label class="label">Converted Results</label>
+    <textarea id="outputLink" placeholder="Your converted URLs will appear here..." readonly></textarea>
+    
+    <button id="copyBtn">Copy All Results</button>
   </div>
 
-  <button id="convertBtn">Convert Links</button>
-  
-  <label class="label">Converted Results:</label>
-  <textarea id="outputLink" placeholder="Results will appear here in serial" readonly></textarea>
-  
-  <button id="copyBtn">Copy All Results</button>
-  
   <script>
     document.getElementById('convertBtn').addEventListener('click', () => {
       const input = document.getElementById('inputLink').value.trim();

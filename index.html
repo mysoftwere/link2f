@@ -17,6 +17,28 @@
       --input-bg: #0f172a;
       --accent: #10b981;
       --accent-hover: #059669;
+      --label-color: #e2e8f0;
+      --code-bg: #334155;
+      --code-color: #93c5fd;
+      --box-group-bg: rgba(15, 23, 42, 0.5);
+    }
+
+    /* Light Mode Variables */
+    body.light-mode {
+      --bg-color: #f1f5f9;
+      --card-bg: #ffffff;
+      --text-main: #1e293b;
+      --text-muted: #64748b;
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --border-color: #e2e8f0;
+      --input-bg: #f8fafc;
+      --accent: #10b981;
+      --accent-hover: #059669;
+      --label-color: #334155;
+      --code-bg: #e2e8f0;
+      --code-color: #2563eb;
+      --box-group-bg: #f8fafc;
     }
 
     body { 
@@ -58,7 +80,7 @@
       font-weight: 600;
       margin-bottom: 8px;
       display: block;
-      color: #e2e8f0;
+      color: var(--label-color);
     }
 
     .note {
@@ -95,11 +117,12 @@
     }
 
     .box-group {
-      background: rgba(15, 23, 42, 0.5);
+      background: var(--box-group-bg);
       padding: 25px;
       border-radius: 12px;
       margin-bottom: 24px;
       border: 1px solid var(--border-color);
+      transition: background 0.3s ease;
     }
 
     .or-divider {
@@ -164,11 +187,49 @@
     }
 
     code {
-      background: #334155;
+      background: var(--code-bg);
       padding: 3px 6px;
       border-radius: 4px;
       font-size: 11px;
-      color: #93c5fd;
+      color: var(--code-color);
+    }
+
+    /* Theme Toggle Button */
+    .theme-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: var(--card-bg);
+      border: 1px solid var(--border-color);
+      border-radius: 50px;
+      padding: 8px 16px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    .theme-toggle:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+      width: auto;
+      margin-bottom: 0;
+    }
+
+    .theme-toggle .icon { font-size: 18px; }
+
+    body {
+      position: relative;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    .container {
+      transition: background 0.3s ease, border-color 0.3s ease;
     }
 
     /* Scrollbar Styling */
@@ -179,6 +240,10 @@
   </style>
 </head>
 <body>
+  <button class="theme-toggle" id="themeToggle">
+    <span class="icon" id="themeIcon">☀️</span>
+    <span id="themeText">Light Mode</span>
+  </button>
   <div class="container">
     <h3>URL Transformer Pro</h3>
     
@@ -206,6 +271,26 @@
   </div>
 
   <script>
+    // Theme Toggle Logic
+    const themeToggle = document.getElementById('themeToggle');
+    const themeIcon = document.getElementById('themeIcon');
+    const themeText = document.getElementById('themeText');
+
+    // Load saved preference
+    if (localStorage.getItem('theme') === 'light') {
+      document.body.classList.add('light-mode');
+      themeIcon.textContent = '🌙';
+      themeText.textContent = 'Dark Mode';
+    }
+
+    themeToggle.addEventListener('click', () => {
+      document.body.classList.toggle('light-mode');
+      const isLight = document.body.classList.contains('light-mode');
+      themeIcon.textContent = isLight ? '🌙' : '☀️';
+      themeText.textContent = isLight ? 'Dark Mode' : 'Light Mode';
+      localStorage.setItem('theme', isLight ? 'light' : 'dark');
+    });
+
     document.getElementById('convertBtn').addEventListener('click', () => {
       const input = document.getElementById('inputLink').value.trim();
       const domainInput = document.getElementById('domainInput').value.trim();
